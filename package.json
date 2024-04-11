@@ -1,26 +1,26 @@
 {
-  "name": "simple_luau_disassembler",
-  "version": "1.0.0",
-  "description": "Simple disassembler for the Luau programming language",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Upbolt/simple_luau_disassembler.git"
-  },
-  "keywords": [
-    "luau",
-    "luau",
-    "disassembler",
-    "luau",
-    "bytecode"
-  ],
-  "author": "ARSON",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Upbolt/simple_luau_disassembler/issues"
-  },
-  "homepage": "https://github.com/Upbolt/simple_luau_disassembler#readme"
+	"name": "simple-luau-disassembler",
+	"version": "1.0.0",
+	"description": "Simple disassembler for the Luau programming language",
+	"main": "index.js",
+	"scripts": {
+		"install": "node-gyp configure build"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Upbolt/simple-luau-disassembler.js.git"
+	},
+	"keywords": [
+		"luau",
+		"luau",
+		"disassembler",
+		"luau",
+		"bytecode"
+	],
+	"author": "ARSON",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Upbolt/simple_luau_disassembler/issues"
+	},
+	"homepage": "https://github.com/Upbolt/simple_luau_disassembler#readme"
 }

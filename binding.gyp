@@ -90,23 +90,27 @@
     },
     {
       "target_name": "simple_lua_disassembler",
-      "include_dirs": [
-        "deps/luau/VM/src",
-        "deps/luau/VM/include",
-        "deps/luau/Common/include",
-        "deps/luau/Compiler/include",
-        "deps/luau/Ast/include",
-      ],
       "sources": [
         "native/lib.cpp",
         "native/deserializer/deserializer.cpp",
         "native/disassembler/disassembler.cpp",
         "native/dumper/dumper.cpp",
       ],
-      "libraries": [
-        "-lD:/Projects/simple_luau_disassembler/build/Release/luau.VM.lib",
-        "-lD:/Projects/simple_luau_disassembler/build/Release/luau.Ast.lib",
-        "-lD:/Projects/simple_luau_disassembler/build/Release/luau.Compiler.lib",
+      "conditions": [
+        [
+          'OS=="win"', {
+            "include_dirs": [
+              "deps/luau/VM/src",
+              "deps/luau/VM/include",
+              "deps/luau/Common/include",
+              "deps/luau/Compiler/include",
+              "deps/luau/Ast/include",
+            ],
+            "libraries": [
+              "-L<(module_root_dir)/build/Release"
+            ]
+          }
+        ]
       ],
       "dependencies": [
         "luau.VM",
