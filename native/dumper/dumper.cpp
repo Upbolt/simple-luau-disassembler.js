@@ -158,11 +158,16 @@ void dumpConstant(TempBuffer<TString *> &string_table, const std::vector<Constan
   case Constant::Type_Closure:
   {
     const Proto *func = protos.data[data.valueClosure];
+    const auto debug_name = ([&]()
+                             {
+            if (func->debugname == nullptr || func->debugname->len == 0) {
+                return std::string("");
+            }
 
-    const auto dumpname = std::string_view(func->debugname->data, func->debugname->len);
+            return std::string(func->debugname->data, func->debugname->len); })();
 
-    if (!dumpname.empty())
-      formatAppend(result, "'%s'", dumpname.data());
+    if (!debug_name.empty())
+      formatAppend(result, "'%s'", debug_name.data());
     break;
   }
   }
