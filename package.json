@@ -2,7 +2,7 @@
 	"name": "simple-luau-disassembler",
 	"version": "1.0.0",
 	"description": "Simple disassembler for the Luau programming language",
-	"main": "build/Release/simple_lua_disassembler",
+	"main": "index.cjs",
 	"scripts": {
 		"install": "node-gyp configure build"
 	},
