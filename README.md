@@ -1,6 +1,6 @@
 # Simple Luau Disassembler (.js)
 
-Provides a function to produce a dump of Luau (0.620) instructions as a string
+Provides a function to produce a dump of [Luau](https://github.com/Roblox/luau) (0.620) instructions as a string
 
 ## Supported Platforms
 
