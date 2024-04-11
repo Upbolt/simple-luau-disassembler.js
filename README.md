@@ -13,7 +13,9 @@ If you need additional platform support, feel free to submit an issue on this re
 This Javascript code
 
 ```js
-import { disassemble } from "simple_lua_disassembler";
+import disassembler from "simple-luau-disassembler";
+
+const { disassemble } = disassembler;
 
 disassemble("print'hi'");
 ```
