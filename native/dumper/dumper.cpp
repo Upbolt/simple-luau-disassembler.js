@@ -177,13 +177,6 @@ void sld::dumpInstruction(TempBuffer<TString *> &string_table, const std::vector
 {
   uint32_t insn = *code++;
 
-  auto opcode = (LuauOpcode)LUAU_INSN_OP(insn);
-  auto a = LUAU_INSN_A(insn);
-  auto b = LUAU_INSN_B(insn);
-  auto c = LUAU_INSN_C(insn);
-  auto d = LUAU_INSN_D(insn);
-  auto e = LUAU_INSN_E(insn);
-
   switch (LUAU_INSN_OP(insn))
   {
   case LOP_NOP:

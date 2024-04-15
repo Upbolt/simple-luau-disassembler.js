@@ -143,7 +143,7 @@ inline static void rtrim(std::string &s)
           s.end());
 }
 
-std::optional<std::string> sld::deserialize(const char *data, size_t size)
+std::optional<std::string> sld::deserialize(const char *data, size_t size, BytecodeEncoding encoding)
 {
   std::string disassembly{};
   const char *chunkname = "simple_lua_disassembler";
@@ -252,7 +252,19 @@ std::optional<std::string> sld::deserialize(const char *data, size_t size)
     p->sizecode = sizecode;
 
     for (int j = 0; j < p->sizecode; ++j)
-      p->code[j] = read<uint32_t>(data, size, offset); //
+    {
+      auto instruction = read<uint32_t>(data, size, offset); //
+
+      if (encoding == BytecodeEncoding::Roblox)
+      {
+        uint8_t *ptr = reinterpret_cast<uint8_t *>(&instruction);
+        auto op = LUAU_INSN_OP(instruction);
+        op *= 203;
+        ptr[0] = static_cast<uint8_t>(op);
+      }
+
+      p->code[j] = instruction;
+    }
 
     p->codeentry = p->code;
 
@@ -492,10 +504,17 @@ std::optional<std::string> sld::deserialize(const char *data, size_t size)
 
     for (int j = 0; j < proto->sizecode;)
     {
-      const auto op = LUAU_INSN_OP(proto->code[j]);
+      const uint32_t *code = &proto->code[j];
+      uint8_t op = LUAU_INSN_OP(*code);
 
-      dumpInstruction(strings, constants, protos, &proto->code[j], disassembly, 0);
+      if (op == LOP_PREPVARARGS)
+      {
+        // Don't emit function header in bytecode - it's used for call dispatching and doesn't contain "interesting" information
+        j++;
+        continue;
+      }
 
+      dumpInstruction(strings, constants, protos, code, disassembly, 0);
       j += Luau::getOpLength(LuauOpcode(op));
     }
 

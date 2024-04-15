@@ -10,7 +10,7 @@ std::optional<std::string> sld::disassemble(const std::string &script)
   return deserialize(bytecode.data(), bytecode.size());
 }
 
-std::optional<std::string> sld::disassemble_bytecode(const std::vector<uint8_t> &bytecode)
+std::optional<std::string> sld::disassemble_bytecode(const std::string &bytecode, sld::BytecodeEncoding encoding)
 {
-  return deserialize(reinterpret_cast<const char *>(bytecode.data()), bytecode.size());
+  return deserialize(bytecode.data(), bytecode.size(), encoding);
 }

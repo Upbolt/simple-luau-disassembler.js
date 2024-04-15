@@ -1,3 +1,5 @@
+#pragma once
+
 #include <lobject.h>
 #include <lmem.h>
 

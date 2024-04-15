@@ -39,23 +39,26 @@ napi_value script_disassemble(napi_env env, napi_callback_info info)
 
 napi_value bytecode_disassemble(napi_env env, napi_callback_info info)
 {
-  size_t arg_count = 1;
-  std::array<napi_value, 1> args{};
+  size_t arg_count = 2;
+  std::array<napi_value, 2> args{};
 
   napi_get_cb_info(env, info, &arg_count, args.data(), nullptr, nullptr);
 
+  uint8_t *raw_buffer;
+
   size_t bytecode_length = 0;
+  size_t encoding_length = 0;
 
-  napi_get_arraybuffer_info(env, args.at(0), nullptr, &bytecode_length);
+  napi_get_buffer_info(env, args.at(0), reinterpret_cast<void **>(&raw_buffer), &bytecode_length);
 
-  std::vector<uint8_t> bytecode{};
-  bytecode.reserve(bytecode_length);
+  std::string bytecode(reinterpret_cast<char *>(raw_buffer), bytecode_length);
+  std::string encoding(encoding_length, '\0');
 
   auto bytecode_buffer = bytecode.data();
 
-  napi_get_arraybuffer_info(env, args.at(0), reinterpret_cast<void **>(&bytecode_buffer), &bytecode_length);
+  napi_get_buffer_info(env, args.at(0), reinterpret_cast<void **>(&bytecode_buffer), &bytecode_length);
 
-  const auto disassembly = sld::disassemble_bytecode(bytecode);
+  const auto disassembly = sld::disassemble_bytecode(bytecode, encoding == "roblox" ? sld::BytecodeEncoding::Roblox : sld::BytecodeEncoding::Luau);
 
   if (!disassembly.has_value())
   {
