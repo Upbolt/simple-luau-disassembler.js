@@ -22,5 +22,8 @@
 	"bugs": {
 		"url": "https://github.com/Upbolt/simple_luau_disassembler/issues"
 	},
-	"homepage": "https://github.com/Upbolt/simple_luau_disassembler#readme"
+	"homepage": "https://github.com/Upbolt/simple_luau_disassembler#readme",
+	"devDependencies": {
+		"@types/node": "^20.12.7"
+	}
 }
