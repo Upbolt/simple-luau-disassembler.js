@@ -1,6 +1,6 @@
 {
 	"name": "simple-luau-disassembler",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Simple disassembler for the Luau programming language",
 	"main": "index.cjs",
 	"scripts": {

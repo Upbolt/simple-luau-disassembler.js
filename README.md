@@ -10,27 +10,69 @@ If you need additional platform support, feel free to submit an issue on this re
 
 ## Example
 
-This Javascript code
+### Disassembling Scripts
 
-```js
-import disassembler from "simple-luau-disassembler";
+> **This Javascript code**
+>
+> ```js
+> import disassembler from "simple-luau-disassembler";
+>
+> const { disassemble } = disassembler;
+>
+> disassemble("print'hi'");
+> ```
+>
+> **produces this output**
+>
+> ```
+> [__unnamed_function__]
+> GETIMPORT R0 1 [print]
+> LOADK R1 K2 ['hi']
+> CALL R0 1 0
+> RETURN R0 0
+> ```
 
-const { disassemble } = disassembler;
+### Disassembling Bytecode
 
-disassemble("print'hi'");
-```
+> ```js
+> import disassembler from "simple-luau-disassembler";
+>
+> const { disassembleBytecode } = disassembler;
+>
+> const bytecode = await readFile("path/to/your/binary/bytecode/file");
+>
+> disassembleBytecode(bytecode);
+> ```
+>
+> ```
+> [__unnamed_function__]
+> GETIMPORT R0 1 [print]
+> LOADK R1 K2 ['hello world']
+> CALL R0 1 0
+> RETURN R0 0
+> ```
 
-produces this output
+### Disassembling Bytecode (Encoded)
 
-```
-[__unnamed_function__]
-PREPVARARGS R0
-GETIMPORT R0 1 [print]
-NOP
-LOADK R1 K2 ['hi']
-CALL R0 1 0
-RETURN R0 0
-```
+Bytecode versions from the Roblox client have encoded instructions; to support this behavior, pass in the "roblox" flag into the second parameter of `disassembleBytecode`
+
+> ```js
+> import disassembler from "simple-luau-disassembler";
+>
+> const { disassembleBytecode } = disassembler;
+>
+> const bytecode = await readFile("path/to/roblox/encoded/bytecode/file");
+>
+> disassembleBytecode(bytecode, "roblox");
+> ```
+>
+> ```
+> [__unnamed_function__]
+> GETIMPORT R0 1 [print]
+> LOADK R1 K2 ['Hello world!']
+> CALL R0 1 0
+> RETURN R0 0
+> ```
 
 ## Build Instructions
 
