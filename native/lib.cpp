@@ -50,6 +50,7 @@ napi_value bytecode_disassemble(napi_env env, napi_callback_info info)
   size_t encoding_length = 0;
 
   napi_get_buffer_info(env, args.at(0), reinterpret_cast<void **>(&raw_buffer), &bytecode_length);
+  napi_get_value_string_utf8(env, args.at(1), nullptr, 0, &encoding_length);
 
   std::string bytecode(reinterpret_cast<char *>(raw_buffer), bytecode_length);
   std::string encoding(encoding_length, '\0');
@@ -57,6 +58,7 @@ napi_value bytecode_disassemble(napi_env env, napi_callback_info info)
   auto bytecode_buffer = bytecode.data();
 
   napi_get_buffer_info(env, args.at(0), reinterpret_cast<void **>(&bytecode_buffer), &bytecode_length);
+  napi_get_value_string_utf8(env, args.at(1), &encoding[0], encoding.size() + 1, nullptr);
 
   const auto disassembly = sld::disassemble_bytecode(bytecode, encoding == "roblox" ? sld::BytecodeEncoding::Roblox : sld::BytecodeEncoding::Luau);
 
