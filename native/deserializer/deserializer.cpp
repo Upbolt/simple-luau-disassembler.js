@@ -13,6 +13,7 @@
 #include <lualib.h>
 
 #include <Luau/Bytecode.h>
+#include <Luau/BytecodeUtils.h>
 
 #include <cstring>
 #include <algorithm>
@@ -470,9 +471,10 @@ std::optional<std::string> sld::deserialize(const char *data, size_t size)
 
   for (std::size_t i = 0; i < protos.count; i++)
   {
+    const auto proto = protos.data[i];
+
     const auto debug_name = ([&]()
                              {
-            const auto proto = protos.data[i];
                 if (proto->debugname == nullptr || proto->debugname->len == 0) {
                     return std::string("__unnamed_function__");
                 }
@@ -480,16 +482,21 @@ std::optional<std::string> sld::deserialize(const char *data, size_t size)
                 return std::string(proto->debugname->data, proto->debugname->len); })();
 
     std::vector<Instruction> instructions{};
-    instructions.reserve(protos.data[i]->sizecode);
+    instructions.reserve(proto->sizecode);
 
     disassembly.append("[");
     disassembly.append(debug_name);
     disassembly.append("]\n");
 
-    for (int j = 0; j < protos.data[i]->sizecode; j++)
+    const auto &constants = proto_constants.at(i);
+
+    for (int j = 0; j < proto->sizecode;)
     {
-      const auto &constants = proto_constants.at(i);
-      dumpInstruction(strings, constants, protos, &protos.data[i]->code[j], disassembly, 0);
+      const auto op = LUAU_INSN_OP(proto->code[j]);
+
+      dumpInstruction(strings, constants, protos, &proto->code[j], disassembly, 0);
+
+      j += Luau::getOpLength(LuauOpcode(op));
     }
 
     disassembly.append("\n");
